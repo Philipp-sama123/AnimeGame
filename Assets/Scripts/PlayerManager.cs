@@ -11,16 +11,13 @@ public class PlayerManager : CharacterManager {
 
 
     [Header("Player Flags")]
-    public bool isUsingRootMotion;
-    public bool addRootMotionVelocity;
     public bool isSprinting;
     public bool isGrounded;
-
+    public bool isWeaponEquipped; 
+    
+    
     public bool isInAir;
-    // public bool canDoCombo;
-    // public bool isUsingRightHand;
-    // public bool isUsingLeftHand;
-    // public bool isInvulnerable;
+    public bool canDoCombo;
 
     private void Awake()
     {
@@ -39,10 +36,8 @@ public class PlayerManager : CharacterManager {
         _playerLocomotion.HandleJumping();
         _playerLocomotion.HandleRollingAndSprinting();
 
-        _animatorManager.animator.SetBool(_animatorManager.IsInAir, isInAir);
-        
-        isUsingRootMotion = _animatorManager.animator.GetBool(_animatorManager.IsUsingRootMotion);
-        addRootMotionVelocity = _animatorManager.animator.GetBool(_animatorManager.AddRootMotionVelocity);
+        // _animatorManager.animator.SetBool(_animatorManager.IsInAir, isInAir);
+        // canDoCombo = _animatorManager.animator.GetBool(_animatorManager.CanDoCombo);
     }
 
     private void FixedUpdate()
@@ -51,7 +46,6 @@ public class PlayerManager : CharacterManager {
 
         _playerLocomotion.HandleMovement();
         _playerLocomotion.HandleFalling(deltaTime);
-
         _playerLocomotion.HandleRotation(deltaTime);
 
     }

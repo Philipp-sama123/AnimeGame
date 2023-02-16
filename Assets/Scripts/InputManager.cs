@@ -17,6 +17,12 @@ public class InputManager : MonoBehaviour {
     public float cameraInputX;
     public float cameraInputY;
 
+    /** Lock On **/
+    public bool lockOnInput;
+    public bool lockOnFlag;
+    public bool rightStickLeftInput;
+    public bool rightStickRightInput;
+
     [Header("Jump and Dodge")]
     public bool dodgeAndSprintInput;
     public bool jumpInput;
@@ -24,11 +30,6 @@ public class InputManager : MonoBehaviour {
     public bool dodgeFlag;
     public float rollInputTimer;
 
-    /** Lock On **/
-    public bool lockOnInput;
-    public bool lockOnFlag;
-    public bool rightStickLeftInput;
-    public bool rightStickRightInput;
     public bool lightAttackInput;
     public bool heavyAttackInput;
 
@@ -60,6 +61,12 @@ public class InputManager : MonoBehaviour {
 
             _playerControls.PlayerActions.HeavyAttack.performed += i => heavyAttackInput = true;
             _playerControls.PlayerActions.HeavyAttack.canceled += i => heavyAttackInput = false;
+
+            _playerControls.PlayerActions.LockOn.performed += i => lockOnInput = true;
+
+
+            _playerControls.PlayerActions.LockOnTargetRight.performed += i => rightStickRightInput = true;
+            _playerControls.PlayerActions.LockOnTargetLeft.performed += i => rightStickLeftInput = true;
         }
         _playerControls.Enable();
     }
@@ -74,6 +81,7 @@ public class InputManager : MonoBehaviour {
         HandleMovementInput();
         HandleRollAndSprintInput(deltaTime);
         HandleAttackInput();
+        HandleLockOnInput();
     }
 
     private void HandleAttackInput()
@@ -131,4 +139,49 @@ public class InputManager : MonoBehaviour {
         //     _playerManager.isSprinting = false;
         // }
     }
+
+    private void HandleLockOnInput()
+    {
+        if ( lockOnInput && lockOnFlag == false )
+        {
+            lockOnInput = false;
+            _cameraManager.HandleLockOn();
+
+            if ( _cameraManager.nearestLockOnTarget != null )
+            {
+                _cameraManager.currentLockOnTarget = _cameraManager.nearestLockOnTarget;
+                lockOnFlag = true;
+            }
+        }
+        else if ( lockOnInput && lockOnFlag )
+        {
+            lockOnInput = false;
+            lockOnFlag = false;
+            _cameraManager.ClearLockOnTargets();
+        }
+
+        if ( lockOnFlag && rightStickLeftInput )
+        {
+            rightStickLeftInput = false;
+            _cameraManager.HandleLockOn();
+
+            if ( _cameraManager.leftLockTarget != null )
+            {
+                _cameraManager.currentLockOnTarget = _cameraManager.leftLockTarget;
+            }
+        }
+
+        if ( lockOnFlag && rightStickRightInput )
+        {
+            rightStickRightInput = false;
+            _cameraManager.HandleLockOn();
+
+            if ( _cameraManager.rightLockTarget != null )
+            {
+                _cameraManager.currentLockOnTarget = _cameraManager.rightLockTarget;
+            }
+        }
+        _cameraManager.SetCameraHeight();
+    }
+
 }

@@ -6,8 +6,8 @@ public class PlayerAttacker : MonoBehaviour {
     private PlayerManager _playerManager;
     private InputManager _inputManager;
     private CameraManager _cameraManager;
-    public string lightAttackAnimation ="Light Attack Default";
-    public string heavyAttackAnimation="Heavy Attack Default";
+    public string lightAttackAnimation = "Light Attack Default";
+    public string heavyAttackAnimation = "Heavy Attack Default";
     private string _lastAttack;
 
     private void Awake()
@@ -23,33 +23,40 @@ public class PlayerAttacker : MonoBehaviour {
 
     public void HandleLightAttack(WeaponItem weapon)
     {
-        // if ( playerManager.canDoCombo )
+        //  ToDo: --> set canDoCombo by Animations (!) 
+        // if ( playerManager.canDoCombo ) 
         // {
-        //     inputManager.comboFlag = true;
-        //     animatorManager.animator.SetBool("IsUsingRightHand", true); // Todo: think of removing it here - but where (?) -oo-> Animator handler + appropriate fct. 
+        //     inputHandler.comboFlag = true;
+        //     playerAnimatorManager.animator.SetBool("IsUsingRightHand", true); // Todo: think of removing it here - but where (?) -oo-> Animator handler + appropriate fct. 
         //     HandleWeaponCombo(playerInventory.rightWeapon);
-        //     inputManager.comboFlag = false;
+        //     inputHandler.comboFlag = false;
         // }
         // else
         // {
         //     if ( playerManager.isInteracting || playerManager.canDoCombo ) return;
         //
-        //     animatorManager.animator.SetBool("IsUsingRightHand", true); // Todo: think of removing it here - but where (?) -oo-> Animator handler + appropriate fct. 
+        //     playerAnimatorManager.animator.SetBool("IsUsingRightHand", true); // Todo: think of removing it here - but where (?) -oo-> Animator handler + appropriate fct. 
         //     HandleLightAttack(playerInventory.rightWeapon);
         // }
-        _animatorManager.PlayTargetAnimation(weapon.lightAttack01, true, true);
-        _lastAttack = weapon.lightAttack01;
     }
 
     public void HandleLightAttack()
     {
-        _animatorManager.PlayTargetAnimation(lightAttackAnimation, true, true);
+        // if ( _lastAttack == lightAttackAnimation )
+        // {
+        //     _animatorManager.PlayTargetAnimation("Light Attack Combo 1", true, false);
+        //     _lastAttack = "Light Attack Combo 1";
+        // }
+        // else
+        // {
+        _animatorManager.PlayTargetAnimation(lightAttackAnimation);
         _lastAttack = lightAttackAnimation;
+        // }
     }
 
     public void HandleHeavyAttack()
     {
-        _animatorManager.PlayTargetAnimation(heavyAttackAnimation, true, true);
+        _animatorManager.PlayTargetAnimation(heavyAttackAnimation);
         _lastAttack = heavyAttackAnimation;
     }
 
@@ -85,34 +92,34 @@ public class PlayerAttacker : MonoBehaviour {
     {
         if ( _lastAttack == weapon.lightAttack01 )
         {
-            _animatorManager.PlayTargetAnimation(weapon.lightAttack02, true, true);
+            _animatorManager.PlayTargetAnimation(weapon.lightAttack02);
             _lastAttack = weapon.lightAttack02;
         }
         else if ( _lastAttack == weapon.lightAttack02 )
         {
-            _animatorManager.PlayTargetAnimation(weapon.lightAttack03, true, true);
+            _animatorManager.PlayTargetAnimation(weapon.lightAttack03);
             _lastAttack = weapon.lightAttack03;
         }
         else if ( _lastAttack == weapon.lightAttack03 )
         {
-            _animatorManager.PlayTargetAnimation(weapon.lightAttack04, true, true);
+            _animatorManager.PlayTargetAnimation(weapon.lightAttack04);
             _lastAttack = weapon.lightAttack04;
         }
 
 
         if ( _lastAttack == weapon.heavyAttack01 )
         {
-            _animatorManager.PlayTargetAnimation(weapon.heavyAttack02, true, true);
+            _animatorManager.PlayTargetAnimation(weapon.heavyAttack02);
             _lastAttack = weapon.heavyAttack02;
         }
         else if ( _lastAttack == weapon.heavyAttack02 )
         {
-            _animatorManager.PlayTargetAnimation(weapon.heavyAttack03, true, true);
+            _animatorManager.PlayTargetAnimation(weapon.heavyAttack03);
             _lastAttack = weapon.heavyAttack03;
         }
         else if ( _lastAttack == weapon.heavyAttack03 )
         {
-            _animatorManager.PlayTargetAnimation(weapon.heavyAttack04, true, true);
+            _animatorManager.PlayTargetAnimation(weapon.heavyAttack04);
             _lastAttack = weapon.heavyAttack04;
         }
 
@@ -120,12 +127,7 @@ public class PlayerAttacker : MonoBehaviour {
 
     private void PerformBlockingAction()
     {
-        if ( _playerManager.isUsingRootMotion )
-            return;
-        if ( _playerManager.isBlocking )
-            return;
-
-        _animatorManager.PlayTargetAnimation("[Combat Action] Blocking Start", false, true);
+        _animatorManager.PlayTargetAnimation("[Combat Action] Blocking Start");
         // playerEquipmentManager.OpenBlockingCollider();
         _playerManager.isBlocking = true;
     }
