@@ -36,7 +36,7 @@ public class PlayerManager : CharacterManager {
         _playerLocomotion.HandleJumping();
         _playerLocomotion.HandleRollingAndSprinting();
 
-        // _animatorManager.animator.SetBool(_animatorManager.IsInAir, isInAir);
+        _animatorManager.animator.SetBool("Grounded", isGrounded);
         // canDoCombo = _animatorManager.animator.GetBool(_animatorManager.CanDoCombo);
     }
 

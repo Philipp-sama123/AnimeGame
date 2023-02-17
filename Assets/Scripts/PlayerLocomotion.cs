@@ -22,7 +22,6 @@ public class PlayerLocomotion : MonoBehaviour {
     [SerializeField] private float leapingVelocity = 2.5f;
     public int inAirTimer;
 
-    public bool useHorizontalInput = false;
     private Vector3 _normalVector;
     private Vector3 _targetPosition;
 
@@ -49,8 +48,13 @@ public class PlayerLocomotion : MonoBehaviour {
 
     public void HandleMovement()
     {
+        if ( _playerManager.isGrounded == false )
+            rigidbody.AddForce(rigidbody.transform.forward * _inputManager.moveAmount * 10 * fallingSpeed, ForceMode.Acceleration);
+
         if ( _inputManager.lockOnFlag && _inputManager.sprintFlag == false )
+        {
             _animatorManager.UpdateAnimatorValues(_inputManager.horizontalInput, _inputManager.verticalInput, _inputManager.sprintFlag);
+        }
         else
         {
             _animatorManager.UpdateAnimatorValues(0, _inputManager.moveAmount, _inputManager.sprintFlag);
@@ -121,7 +125,7 @@ public class PlayerLocomotion : MonoBehaviour {
     {
         if ( _inputManager.jumpInput )
         {
-            _animatorManager.PlayTargetAnimation("JumpingFull");
+            _animatorManager.animator.SetInteger("State", 2);
             _animatorManager.forceMultiplier = jumpForceMultiplier;
         }
     }
@@ -191,7 +195,7 @@ public class PlayerLocomotion : MonoBehaviour {
         dir.Normalize();
         origin = origin + dir * groundDirectionRayDistance;
 
-        _targetPosition = transform.position;
+        _targetPosition = rigidbody.position;
 
         Debug.DrawRay(origin, -Vector3.up * minimumDistanceNeededToBeginFall, Color.red);
         if ( Physics.Raycast(origin, -Vector3.up, out hit, minimumDistanceNeededToBeginFall, groundLayer) )
@@ -204,7 +208,7 @@ public class PlayerLocomotion : MonoBehaviour {
             if ( _playerManager.isInAir )
             {
                 Debug.Log("[Info] Landing You were in the air for " + inAirTimer);
-                _animatorManager.PlayTargetAnimation("Landing");
+                // _animatorManager.PlayTargetAnimation("Landing");
                 inAirTimer = 0;
                 _playerManager.isInAir = false;
             }
@@ -218,16 +222,23 @@ public class PlayerLocomotion : MonoBehaviour {
 
             if ( _playerManager.isInAir == false )
             {
-                _animatorManager.PlayTargetAnimation("Falling");
+                _animatorManager.animator.SetInteger("State", 3);
                 _playerManager.isInAir = true;
             }
 
             // ToDo: slight air movement 
-            rigidbody.AddForce(rigidbody.transform.forward * _inputManager.moveAmount * 10 * fallingSpeed, ForceMode.Acceleration);
         }
-
+        // KeepFeetOnGround();
         if ( _playerManager.isGrounded ) // ToDO: find out if its good(?) if no --> better way keep your feet on the ground 
             rigidbody.position = Vector3.Lerp(transform.position, _targetPosition, deltaTime / .2f);
     }
-
+    // private void KeepFeetOnGround() {
+    //     float raycastDistance = 0.2f; // adjust as needed
+    //     RaycastHit hit;
+    //     bool isGrounded = Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down, out hit, raycastDistance);
+    //    Debug.Log("isGrounded"+ isGrounded);
+    //     if (isGrounded) {
+    //         transform.position = new Vector3(transform.position.x, hit.point.y, transform.position.z);
+    //     }
+    // }
 }
