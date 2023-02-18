@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 286529137}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1.5}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -58,7 +58,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 75
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -6708,7 +6708,7 @@ GameObject:
   - component: {fileID: 1191942331388066177}
   m_Layer: 9
   m_Name: '[Player] 3rd Person MainPlayer'
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6756,7 +6756,7 @@ Animator:
   m_GameObject: {fileID: 8057916934052953098}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 97a70e1893eacab4186f36faae78c2b1, type: 3}
-  m_Controller: {fileID: 9100000, guid: dcfdc3414079144d7b0e6df335e131db, type: 2}
+  m_Controller: {fileID: 9100000, guid: 8c192fd7bb3d344edbda104e41076147, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 1
   m_ApplyRootMotion: 1
@@ -6778,7 +6778,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8228d53aed54c4e5a9b69bdd4c495e80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lockOnTransform: {fileID: 0}
+  lockOnTransform: {fileID: 855512088057565788}
   canBeRiposted: 0
   canBeParried: 0
   isParrying: 0
@@ -6822,15 +6822,15 @@ MonoBehaviour:
   cameraInput: {x: 0, y: 0}
   cameraInputX: 0
   cameraInputY: 0
+  lockOnInput: 0
+  lockOnFlag: 0
+  rightStickLeftInput: 0
+  rightStickRightInput: 0
   dodgeAndSprintInput: 0
   jumpInput: 0
   sprintFlag: 0
   dodgeFlag: 0
   rollInputTimer: 0
-  lockOnInput: 0
-  lockOnFlag: 0
-  rightStickLeftInput: 0
-  rightStickRightInput: 0
   lightAttackInput: 0
   heavyAttackInput: 0
 --- !u!114 &8057916934052953143
@@ -6846,6 +6846,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidbody: {fileID: 8057916934052953136}
+  minimumDistanceNeededToBeginFall: 1
+  groundDetectionRayStartPoint: 0.5
+  groundDirectionRayDistance: 0.025
   groundLayer:
     serializedVersion: 2
     m_Bits: 257
@@ -6916,6 +6919,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraPivotTransform: {fileID: 2114933827}
   cameraTransform: {fileID: 286529138}
+  targetTransform: {fileID: 0}
   collisionLayers:
     serializedVersion: 2
     m_Bits: 1809
@@ -6932,6 +6936,14 @@ MonoBehaviour:
   pivotAngle: 0
   minimumPivotAngle: -45
   maximumPivotAngle: 45
+  lockedPivotPosition: 1.25
+  unlockedPivotPosition: 1.5
+  availableTargets: []
+  currentLockOnTarget: {fileID: 0}
+  nearestLockOnTarget: {fileID: 0}
+  leftLockTarget: {fileID: 0}
+  rightLockTarget: {fileID: 0}
+  maximumLockOnDistance: 30
 --- !u!1 &8273529381855192335
 GameObject:
   m_ObjectHideFlags: 0
